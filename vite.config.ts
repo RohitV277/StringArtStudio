@@ -32,7 +32,7 @@ function precache(): Plugin {
 
 // base './' keeps the app working from any folder: GitHub Pages sub-paths, Cloudflare Pages, Capacitor.
 export default defineConfig({
-  base: process.env.VITE_BASE || './',
+  base: process.env.VITE_BASE || '/StringArtStudio/',
   plugins: [react(), precache()],
   build: { target: 'es2020', sourcemap: false },
 });
