@@ -1,0 +1,4 @@
+/* Tailwind is used for the small React overlays (offline badge, install and update prompts).
+   Preflight is off so the studio's own styles in components/studio.css stay exactly as designed. */
+@tailwind components;
+@tailwind utilities;

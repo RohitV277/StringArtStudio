@@ -1,0 +1,14 @@
+import { check, done } from './qa-helpers.mjs';
+import { outlineThreads, jumpThreads, multiplyThreads, visibleThreads } from './services/threads.ts';
+console.log('Threads');
+const g = { id: 1, ids: Array.from({ length: 12 }, (_, i) => i + 1), closed: true, c: '#fff', n: 'Circle' };
+check('outline of a closed shape has one thread per nail', outlineThreads(g, '#fff').length === 12);
+check('outline of an open shape has one fewer', outlineThreads({ ...g, closed: false }, '#fff').length === 11);
+check('jump 5 on 12 nails closes in one cycle', jumpThreads(g, 5, '#fff').length === 12);
+check('jump 4 on 12 nails makes 4 triangles', jumpThreads(g, 4, '#fff').length === 12);
+check('multiply 2 skips the one fixed point (nail 0)', multiplyThreads(g, 2, '#fff').length === 11);
+const t = [...outlineThreads(g, '#e53935'), ...jumpThreads({ ...g, id: 2 }, 5, '#1e88e5')];
+check('hiding a color removes only that color', visibleThreads(t, ['#e53935']).every(x => x.c === '#1e88e5'));
+check('hiding a shape removes only its threads', visibleThreads(t, [], [2]).every(x => x.g === 1));
+check('nothing hidden keeps everything', visibleThreads(t).length === t.length);
+done('Threads QA');

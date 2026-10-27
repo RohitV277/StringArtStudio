@@ -1,0 +1,20 @@
+import { check, done } from './qa-helpers.mjs';
+import { createProjectLibrary, parseProject, serializeProject } from './services/projects.ts';
+console.log('Storage');
+const data = new Map();
+const store = { get length() { return data.size; }, key: i => [...data.keys()][i] ?? null, getItem: k => data.get(k) ?? null, setItem: (k, v) => void data.set(k, v), removeItem: k => void data.delete(k) };
+const lib = createProjectLibrary(store);
+const doc = { W: 40, H: 40, strokes: [], nails: [{ id: 1, x: 1, y: 1 }], groups: [], threads: [], nid: 2 };
+const k = lib.save('Mandala', doc, 'thumb');
+store.setItem('unrelated', '1');
+check('saved designs are listed', lib.list().length === 1 && lib.list()[0].name === 'Mandala');
+check('other keys are ignored', lib.list().every(p => p.key.startsWith('ssd-proj-')));
+check('a saved design opens unchanged', lib.open(k).nails.length === 1);
+store.setItem('ssd-proj-broken', '{nope');
+check('damaged entries are skipped', lib.list().length === 1);
+lib.remove(k);
+check('delete removes it', lib.list().length === 0);
+check('project files round-trip', parseProject(serializeProject(doc)).nid === 2);
+let threw = false; try { parseProject('{"a":1}'); } catch { threw = true; }
+check('non-project files are rejected', threw);
+done('Storage QA');

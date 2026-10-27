@@ -1,0 +1,26 @@
+name: Release
+on:
+  push:
+    tags: ['v*']
+permissions:
+  contents: write
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - run: npm install --no-audit --no-fund
+      - run: npm run test:catalog && npm run test:qa
+      - run: npm run build
+      - name: Package the static site
+        run: |
+          mkdir release
+          cp -r dist release/string-art-studio
+          (cd release && zip -r "string-art-studio-${GITHUB_REF_NAME}.zip" string-art-studio)
+      - uses: softprops/action-gh-release@v2
+        with:
+          files: release/string-art-studio-*.zip
+          generate_release_notes: true

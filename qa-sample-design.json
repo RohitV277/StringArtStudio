@@ -1,0 +1,5 @@
+{"W":40,"H":40,"nid":1,"nails":[],"groups":[],"threads":[],
+ "strokes":[
+  {"type":"rect","pts":[[100,100],[200,100],[200,200],[100,200]],"closed":true,"curve":false,"c":"#ffffff","name":"Square 1"},
+  {"type":"circle","pts":[[300,200],[298.8,213.8],[295.3,227.2],[289.6,240]],"closed":true,"curve":true,"c":"#ffb300","name":"Circle 1"}
+ ]}

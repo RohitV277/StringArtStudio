@@ -1,0 +1,17 @@
+import { readFileSync } from 'node:fs';
+import { check, done } from './qa-helpers.mjs';
+import { generateNails } from './services/nails.ts';
+import { outlineThreads, jumpThreads, visibleThreads } from './services/threads.ts';
+import { buildInstructions } from './lib/format.ts';
+console.log('End to end: sample design to build list');
+const doc = JSON.parse(readFileSync(new URL('./qa-sample-design.json', import.meta.url), 'utf8'));
+const { nails, groups } = generateNails(doc.strokes, 10, { W: doc.W, H: doc.H });
+doc.nails = nails; doc.groups = groups;
+doc.threads = [...outlineThreads(groups[0], '#ffffff'), ...jumpThreads(groups[1], 3, '#ffb300')];
+const text = buildInstructions(doc, visibleThreads(doc.threads));
+check('list names the board and nail count', text.includes('Board 40 x 40 cm, ' + nails.length + ' nails'));
+check('list has an angle for every nail', (text.match(/ deg, radius /g) || []).length === nails.length);
+check('list groups threads by color', text.includes('Color white') && text.includes('Color gold'));
+const noGold = buildInstructions(doc, visibleThreads(doc.threads, ['#ffb300']));
+check('hidden colors are left out of the list', !noGold.includes('Color gold'));
+done('Tool QA');
