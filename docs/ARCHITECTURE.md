@@ -31,3 +31,13 @@ Fonts are whatever is installed on the device, so Hindi, Sanskrit and Gujarati w
 
 The studio engine was built and tested as a single script, then moved here unchanged so behaviour stays identical.
 New logic goes into typed modules with QA scripts. The plan is to move the engine over piece by piece.
+
+## Dark studio (default UI)
+
+`public/studio.html` is a single self-contained page (no build step, works offline through the service worker).
+`App.tsx` shows it full screen in an iframe. `?legacy=1` mounts the previous engine (`components/Studio.tsx`).
+Text uses the iPad font list (Latin, Japanese, Chinese, Korean, Arabic, Hebrew, Indic) and is converted to nail outlines. Layer masks (eraser hides, pen reveals; mask layer contents), pixel layers (raster painting that is traced into nails) and custom brushes and shapes (stored in localStorage) are built in. Not yet ported from the legacy engine: pen-tool Bezier editing.
+
+Photo trace tool: with a reference photo loaded, Edge mode snaps a live-wire path to image edges as you drag, and Region mode grows a colour-similarity selection and outlines it. Layers can have a sized canvas (grid and axis, hideable in Precision). Brushes: Pen, Pencil, Pencil soft canvas, Toothy Pencil.
+
+Auto-correct: freehand pen and lasso strokes are recognised as line, rectangle/square, triangle, regular polygon, circle or ellipse and replaced with the exact shape (toggle in Precision, Drawing aids). Photos can be moved, scaled and rotated with the Transform tool. Layers can have their own canvas colour; the board background defaults to white.
