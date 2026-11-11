@@ -19,6 +19,14 @@ Everything runs on the device. No server, no account, no upload.
 
 ---
 
+## New in this version: dark studio layout
+
+- Home screen with New design, Custom size, Start from your photo, Template and Recent designs.
+- Editor with a top tool bar, left size / opacity / smoothing sliders, and a right rail: Layers, Nails, Strings, Build, Precision.
+- Layer actions, Precision panel and Settings popover. Panels can be collapsed or hidden with the corner icon.
+- Two-finger pinch zoom and pan, two-finger tap for undo, Apple Pencil drawing with pressure.
+- Source: `public/studio.html`. The previous UI is still available at `?legacy=1`.
+
 ## Features
 
 | Draw | Nails and strings | Build and keep |
